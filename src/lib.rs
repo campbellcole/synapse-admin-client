@@ -10,19 +10,31 @@ extern crate serde;
 #[macro_use]
 extern crate serde_with;
 
+/// https://matrix-org.github.io/synapse/latest/admin_api/account_validity.html
 pub mod account_validity;
+/// https://matrix-org.github.io/synapse/latest/usage/administration/admin_api/background_updates.html
 pub mod background_updates;
+/// https://matrix-org.github.io/synapse/latest/admin_api/event_reports.html
 pub mod event_reports;
 #[cfg(feature = "unstable-api")]
 pub mod federation;
+/// https://matrix-org.github.io/synapse/latest/admin_api/media_admin_api.html
 pub mod media;
+/// https://matrix-org.github.io/synapse/latest/admin_api/purge_history_api.html
 pub mod purge_history;
+/// https://matrix-org.github.io/synapse/latest/usage/administration/admin_api/registration_tokens.html
 pub mod registration_tokens;
+/// https://matrix-org.github.io/synapse/latest/admin_api/room_membership.html
 pub mod room_membership;
+/// https://matrix-org.github.io/synapse/latest/admin_api/rooms.html
 pub mod rooms;
+/// https://matrix-org.github.io/synapse/latest/admin_api/server_notices.html
 pub mod server_notices;
+/// https://matrix-org.github.io/synapse/latest/admin_api/version_api.html
 pub mod server_version;
+/// https://matrix-org.github.io/synapse/latest/admin_api/statistics.html
 pub mod statistics;
+/// https://matrix-org.github.io/synapse/latest/admin_api/user_admin_api.html
 pub mod users;
 
 mod prelude {

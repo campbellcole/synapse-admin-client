@@ -31,61 +31,33 @@ impl RegistrationToken {
 }
 
 #[serde_as]
-#[derive(Debug, Default, Serialize)]
+#[derive(Debug, Serialize, TypedBuilder)]
 pub struct NewToken {
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(default, setter(strip_option))]
     token: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(default, setter(strip_option))]
     uses_allowed: Option<usize>,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde_as(as = "Option<TimestampMilliSeconds<i64>>")]
+    #[builder(default, setter(strip_option))]
     expiry_time: Option<SystemTime>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(default, setter(strip_option))]
     length: Option<u8>,
 }
 
-impl NewToken {
-    pub fn with_token(mut self, token: Option<String>) -> Self {
-        self.token = token;
-        self
-    }
-
-    pub fn with_uses_allowed(mut self, uses_allowed: Option<usize>) -> Self {
-        self.uses_allowed = uses_allowed;
-        self
-    }
-
-    pub fn with_expiry_time(mut self, expiry_time: Option<SystemTime>) -> Self {
-        self.expiry_time = expiry_time;
-        self
-    }
-
-    pub fn with_length(mut self, length: Option<u8>) -> Self {
-        self.length = length;
-        self
-    }
-}
-
 #[serde_as]
-#[derive(Debug, Default, Serialize)]
+#[derive(Debug, Default, Serialize, TypedBuilder)]
 pub struct UpdateToken {
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[builder(default, setter(strip_option))]
     uses_allowed: Option<usize>,
-    #[serde_as(as = "Option<TimestampMilliSeconds<i64>>")]
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde_as(as = "Option<TimestampMilliSeconds<i64>>")]
+    #[builder(default, setter(strip_option))]
     expiry_time: Option<SystemTime>,
-}
-
-impl UpdateToken {
-    pub fn with_uses_allowed(mut self, uses_allowed: usize) -> Self {
-        self.uses_allowed = Some(uses_allowed);
-        self
-    }
-
-    pub fn with_expiry_time(mut self, expiry_time: SystemTime) -> Self {
-        self.expiry_time = Some(expiry_time);
-        self
-    }
 }
 
 impl SynapseClient {
@@ -102,16 +74,13 @@ impl SynapseClient {
             registration_tokens: Vec<RegistrationToken>,
         }
 
-        let query = if let Some(valid) = valid {
-            vec![("valid", valid.to_string())]
-        } else {
-            vec![]
-        };
+        let mut req = self.inner.get(endpoint!(self "/registration_tokens"));
 
-        execute!(self
-            .inner
-            .get(endpoint!(self "/registration_tokens"))
-            .query(&query)
+        if let Some(valid) = valid {
+            req = req.query(&vec![("valid", valid.to_string())]);
+        }
+
+        execute!(req
             .send()
             .await?
             .json::<MatrixResult<Response>>()
