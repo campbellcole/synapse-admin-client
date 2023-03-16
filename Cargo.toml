@@ -1,0 +1,17 @@
+[package]
+name = "synapse-api"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+matrix-sdk = { version = "0.6.2", default-features = false, features = ["native-tls"] }
+reqwest = { version = "0.11.14", default-features = false, features = ["rustls", "json", "tokio-rustls", "rustls-tls"] }
+serde = { version = "1.0.155", features = ["derive"] }
+serde_json = "1.0.94"
+serde_with = "2.3.1"
+thiserror = "1.0.39"
+tokio = { version = "1.26.0", features = ["full"] }
+typed-builder = "0.14.0"
+url = "2.3.1"
