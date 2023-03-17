@@ -7,7 +7,8 @@ pub struct PurgeHistoryResponse {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PurgeHistoryStatus {
-    pub status: String,
+    pub status: PurgeStatus,
+    pub error: Option<String>,
 }
 
 impl SynapseClient {

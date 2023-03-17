@@ -4,22 +4,18 @@ use matrix_sdk::ruma::events::room::{
 
 use crate::prelude::*;
 
+#[skip_serializing_none]
 #[derive(Debug, Clone, Serialize, Deserialize, TypedBuilder)]
 pub struct GetRoomsQuery {
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(default, setter(strip_option))]
     pub from: Option<usize>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(default, setter(strip_option))]
     pub limit: Option<usize>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(default, setter(strip_option))]
     pub order_by: Option<OrderRoomsBy>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "dir")]
     #[builder(default, setter(strip_option))]
     pub direction: Option<SortDirection>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(default, setter(strip_option))]
     pub search_term: Option<String>,
 }

@@ -60,6 +60,15 @@ mod prelude {
         #[serde(rename = "b")]
         Descending,
     }
+
+    #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+    #[serde(rename_all = "snake_case")]
+    pub enum PurgeStatus {
+        ShuttingDown,
+        Purging,
+        Complete,
+        Failed,
+    }
 }
 
 /// A reqwest client for the Synapse API.

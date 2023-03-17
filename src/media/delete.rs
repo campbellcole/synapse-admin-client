@@ -7,14 +7,13 @@ pub struct MediaDeletionResponse {
 }
 
 #[serde_as]
+#[skip_serializing_none]
 #[derive(Debug, Clone, Serialize, TypedBuilder)]
 pub struct DeleteMediaQuery {
     #[serde_as(as = "TimestampMilliSeconds<i64>")]
     before_ts: SystemTime,
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(default, setter(strip_option))]
     size_gt: Option<usize>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(default, setter(strip_option))]
     keep_profiles: Option<bool>,
 }

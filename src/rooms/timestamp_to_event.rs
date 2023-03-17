@@ -2,12 +2,13 @@ use crate::prelude::*;
 
 #[serde_as]
 #[skip_serializing_none]
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, TypedBuilder)]
 pub struct TimestampToEventQuery {
     #[serde_as(as = "TimestampMilliSeconds<i64>")]
     #[serde(rename = "ts")]
     pub timestamp: SystemTime,
     #[serde(rename = "dir")]
+    #[builder(default, setter(strip_option))]
     pub direction: Option<SortDirection>,
 }
 
@@ -15,7 +16,7 @@ impl SynapseClient {
     pub async fn timestamp_to_event(
         &self,
         room_id: &RoomId,
-        query: TimestampToEventQuery,
+        query: &TimestampToEventQuery,
     ) -> Result<Option<OwnedEventId>> {
         #[derive(Deserialize)]
         struct Response {
@@ -25,7 +26,7 @@ impl SynapseClient {
         execute!(
             self.inner
                 .get(endpoint!(self format!("/rooms/{room_id}/timestamp_to_event")))
-                .query(&query)
+                .query(query)
                 .send()
                 .await?
                 .json::<MatrixResult<Response>>()

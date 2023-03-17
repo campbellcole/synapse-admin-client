@@ -1,21 +1,21 @@
-use matrix_sdk::ruma::events::AnySyncStateEvent;
+use matrix_sdk::ruma::events::AnyStateEvent;
 
 use crate::prelude::*;
 
-#[derive(Debug, Clone, Deserialize)]
-pub struct RoomState {
-    pub state: Vec<AnySyncStateEvent>,
-}
-
 impl SynapseClient {
-    pub async fn get_room_state(&self, room_id: &RoomId) -> Result<RoomState> {
+    pub async fn get_room_state(&self, room_id: &RoomId) -> Result<Vec<AnyStateEvent>> {
+        #[derive(Deserialize)]
+        pub struct Response {
+            pub state: Vec<AnyStateEvent>,
+        }
         execute!(
             self.inner
                 .get(endpoint!(self format!("/rooms/{room_id}/state")))
                 .send()
                 .await?
-                .json::<MatrixResult<RoomState>>()
-                .await?
+                .json::<MatrixResult<Response>>()
+                .await?;
+            res => res.state
         )
     }
 }

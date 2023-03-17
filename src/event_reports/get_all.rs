@@ -33,21 +33,17 @@ pub struct EventReport {
     pub canonical_alias: Option<String>,
 }
 
+#[skip_serializing_none]
 #[derive(Debug, Serialize, TypedBuilder)]
 pub struct GetEventReportsQuery<'a> {
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(default, setter(strip_option))]
     limit: Option<usize>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(default, setter(strip_option))]
     from: Option<i32>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(default, setter(strip_option))]
     dir: Option<SortDirection>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(default, setter(strip_option))]
     user_id: Option<&'a UserId>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[builder(default, setter(strip_option))]
     room_id: Option<&'a RoomId>,
 }
