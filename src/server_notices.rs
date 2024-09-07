@@ -13,6 +13,7 @@ pub struct ServerNoticeBody<'a, T: Serialize + Debug> {
     pub state_key: Option<&'a str>,
 }
 
+#[derive(Debug, Clone, Serialize)]
 pub struct MessageContent<'a> {
     pub body: &'a str,
     pub msgtype: &'a str,
